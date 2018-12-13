@@ -301,20 +301,22 @@ function search(i, max) {
       } else {
         sleep(300, 600, null, null);
       }
-    let curr = seed[i];
-    let prev;
-    if (i == 0) {
-      prev = "Excel%20Shortcut";
     } else {
-      prev = seed[i - 1];
-    }  
-    fetchSearch(i,max,curr,prev);
+      let curr = seed[i];
+      let prev;
+      if (i == 0) {
+        prev = "Excel%20Shortcut";
+      } else {
+        prev = seed[i - 1];
+      }
+      fetchSearch(i, max, curr, prev);
+    }
   } else {
     start();
   }
 }
 
-function fetchSearch(i,max, curr,prev){
+function fetchSearch(i, max, curr, prev) {
   fetch(
     `https://www.udemy.com/api-2.0/marketplace/current/insights/?search=${curr}&language=en&fields[course]=@default,headline,image_304x171,instructor_name,content_info,num_published_lectures,content_length_practice_test_questions,num_published_practice_tests,instructional_level,discount,num_reviews,rating,badges,caption_languages`,
     {
@@ -341,14 +343,14 @@ function fetchSearch(i,max, curr,prev){
     }
   )
     .then(function(res) {
-      if(res.status = "429"){
+      if ((res.status = "429")) {
         let secondsToWait = res.headers.get("retry-after");
-        console.log("HAVE TO WAIT: " + secondsToWait +"s")
+        console.log("HAVE TO WAIT: " + secondsToWait + "s");
         // let maxWait = secondsToWait+600;
         // console.log("Max: " + maxWait)
         // sleep(secondsToWait, maxWait, null, null);
-        return delay(secondsToWait*1000);
-      } else{
+        return delay(secondsToWait * 1000);
+      } else {
         res.json().then(result => {
           let metrics = result.results["0"].course_label_metrics;
           if (metrics !== null) {
@@ -365,7 +367,7 @@ function fetchSearch(i,max, curr,prev){
     .then(console.log)
     .then(() => {
       sleep(5, 25, i, max);
-    })
+    });
 }
 
 function addSuggestions(metrics) {
@@ -381,8 +383,8 @@ function addSuggestions(metrics) {
 }
 
 function delay(t, v) {
-  return new Promise(function(resolve) { 
-      setTimeout(resolve.bind(null, v), t)
+  return new Promise(function(resolve) {
+    setTimeout(resolve.bind(null, v), t);
   });
 }
 
